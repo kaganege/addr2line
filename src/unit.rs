@@ -1,7 +1,16 @@
 use alloc::boxed::Box;
-use alloc::sync::Arc;
 use alloc::vec::Vec;
 use core::cmp;
+
+cfg_select! {
+    feature = "portable-atomic" => {
+        use portable_atomic_util::Arc;
+    }
+
+    _ => {
+        use alloc::sync::Arc;
+    }
+}
 
 use gimli::ReaderOffset;
 

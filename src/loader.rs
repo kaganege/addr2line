@@ -1,11 +1,20 @@
 use alloc::borrow::Cow;
 use alloc::boxed::Box;
-use alloc::sync::Arc;
 use alloc::vec::Vec;
 use core::cell::OnceCell;
 use std::ffi::OsStr;
 use std::fs::File;
 use std::path::{Path, PathBuf};
+
+cfg_select! {
+    feature = "portable-atomic" => {
+        use portable_atomic_util::Arc;
+    }
+
+    _ => {
+        use alloc::sync::Arc;
+    }
+}
 
 use gimli::Reader;
 use memmap2::Mmap;

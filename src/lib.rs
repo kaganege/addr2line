@@ -41,9 +41,18 @@ extern crate alloc;
 pub extern crate fallible_iterator;
 pub extern crate gimli;
 
-use alloc::sync::Arc;
 use core::cell::OnceCell;
 use core::ops::ControlFlow;
+
+cfg_select! {
+    feature = "portable-atomic" => {
+        use portable_atomic_util::Arc;
+    }
+
+    _ => {
+        use alloc::sync::Arc;
+    }
+}
 
 use gimli::ReaderOffset;
 

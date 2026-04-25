@@ -1,6 +1,15 @@
-use alloc::sync::Arc;
 use core::marker::PhantomData;
 use core::ops::ControlFlow;
+
+cfg_select! {
+    feature = "portable-atomic" => {
+        use portable_atomic_util::Arc;
+    }
+
+    _ => {
+        use alloc::sync::Arc;
+    }
+}
 
 /// This struct contains the information needed to find split DWARF data
 /// and to produce a `gimli::Dwarf<R>` for it.
